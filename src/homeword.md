@@ -19,3 +19,18 @@ npm install express               # Adds express to dependencies
 
 # Step 3: Install nodemon for development (auto-restarts on changes)
 npm install --save-dev nodemon   # Adds nodemon to devDependencies
+
+
+
+
+// Day-4 Homework
+inititalize git
+.gitignore
+create a remote repo on github
+push all code to remote origin 
+play with route and extensions 
+order of the routes matter a lot
+install postman app and make a workspace / collection ->   test api call
+Get logic to handle get,post,put,patch
+
+
