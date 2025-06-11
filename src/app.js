@@ -1,86 +1,58 @@
 /*
- * Importing the Express library using require
+ * Importing the Express library using require()
+ * This allows us to use Express framework functionalities
  */
 const express = require("express");
 
 /*
- * Creating an Express application instance
+ * Creating an instance of the Express application
+ * 'app' will now be used to define routes and start the server
  */
 const app = express();
 
-
-
 /*
- * Route 1: Matches any path that starts exactly with "/hello/2"
- * Example match: /hello/2, /hello/2/abc
- * ❌ Will NOT match: /hello/123, /hello/world, etc.
+ * Route handler for GET requests made to "/user"
+ * Example: http://localhost:7777/user?age=25&city=delhi
  */
-app.use("/hello/2", (req, res) => {
-  res.send("Abracadabra!");
+app.get("/user", (req, res) => {
+  /*
+   * Logging the query parameters sent in the URL
+   * Example: If URL is /user?age=25, then req.query = { age: '25' }
+   * This helps in extracting data from the query string
+   */
+  console.log(req.query);
+
+  /*
+   * Sending a JSON response with first and last name
+   * The response will be visible in Postman or the browser as:
+   * {
+   *   "firstName": "Akshay",
+   *   "lastName": "Saini"
+   * }
+   */
+  res.send({ firstName: "Akshay", lastName: "Saini" });
+});
+
+
+
+
+// Express.js app ke liye GET route define kiya gaya hai jo userId ko URL parameter ke form me accept karta hai
+app.get("/user/:userId", (req, res) => {
+
+    // req.params object me sabhi URL parameters hote hain
+    // Yaha hum log userId ko console me print kar rahe hain
+    console.log(req.params);                    // eg: agar URL "/user/123" hai toh output hoga { userId: '123' }
+
+    // Response me JSON object bhej rahe hain user ke naam ke sath
+    res.send({ firstName: "Akshay", lastName: "Saini" });
 });
 
 
 
 /*
- * Route 2: Matches any path that starts with "/hello"
- * Example match: /hello, /hello/world, /hello/2
- * 
- * ⚠️ NOTE: This will match /hello/2 also, so if this route is placed 
- * above "/hello/2", it will take precedence due to order.
- */
-app.use("/hello", (req, res) => {
-  res.send("Hello hello hello!");
-});
-
-
-
-
-/*
- * This will only handle GET requests made to the "/user" route
- * 
- * ✅ GET is method-specific. It will not respond to POST/PUT/etc.
- * Example: http://localhost:PORT/user
- */
-
-app.get("/user1", (req, res) => {
-  console.log("GET /user hit");
-  res.send({ firstName: "Akshay", lastName: "SainiGet" });
-});
-
-
-
-app.post("/user2", (req, res) => {
-  console.log("Saved database");
-  res.send({ firstName: "Akshay", lastName: "SainiPost" });
-});
-
-
-
-
-app.delete("/user3", (req, res) => {
-  console.log("Deleted database");
-  res.send({ firstName: "Akshay", lastName: "SainiDelete" });
-});
-
-
-/*
- * Route 3: Matches any path that starts with "/test"
- * Example match: /test, /test/data
- */
-app.use("/test", (req, res) => {
-  res.send("Hello from the server!");
-});
-
-/*
- * Route 4: Catch-all route for root path "/"
- * This will match anything if no route matches above
- */
-app.use("/", (req, res) => {
-  res.send("Namaste Akshay!");
-});
-
-/*
- * Starting the server on port 7777
+ * Starting the Express server on port 7777
+ * Once the server is running, you can open:
+ * http://localhost:7777/user in browser or Postman
  */
 app.listen(7777, () => {
   console.log("Server is successfully listening on port 7777...");
