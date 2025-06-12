@@ -38,3 +38,13 @@ reading the query params in the routes
 reading the dynamic routes 
 
 
+
+
+//Day -5
+Multiple Route Handlers
+next()
+next function and errors along with res.send()
+what is middle ware 
+how express js handles requests behinfd the scenes 
+
+

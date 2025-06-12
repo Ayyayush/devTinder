@@ -72,6 +72,24 @@ app.use(
   }
 );
 
+
+
+
+// Express app ke andar multiple middlewares aur route handlers define kiye gaye hain
+
+// Route: GET "/user" - yeh pehla route handler hai
+app.get("/user", (req, res, next) => {
+  console.log("Handling the route user 2!!");  // Console pe log karega jab yeh route hit hoga
+  res.send("2nd Route Handler");               // Client ko response bhejega
+});
+
+// Route: GET "/user" - yeh doosra route handler hai jo upar wale se pehle likha hua hona chahiye tha
+app.get("/user", (req, res, next) => {
+  console.log("Handling the route user!!");    // Yeh console pe message print karega
+  next();                                      // next() call karne ka matlab hai agla middleware/handler run hoga
+});
+
+
 /*
  * Starting the server on port 3000.
  * This will allow us to access the app at http://localhost:3000
