@@ -32,5 +32,9 @@ play with route and extensions
 order of the routes matter a lot
 install postman app and make a workspace / collection ->   test api call
 Get logic to handle get,post,put,patch
+explore different types of routing use of ?,*..etc
+use of regex in routes /a/   /.*fly#/..etc
+reading the query params in the routes
+reading the dynamic routes 
 
 

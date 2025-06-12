@@ -1,59 +1,81 @@
 /*
- * Importing the Express library using require()
- * This allows us to use Express framework functionalities
+ * Importing the Express library using CommonJS syntax.
+ * This library allows us to create a web server and manage routing.
  */
 const express = require("express");
 
 /*
- * Creating an instance of the Express application
- * 'app' will now be used to define routes and start the server
+ * Creating an instance of an Express application.
  */
 const app = express();
 
 /*
- * Route handler for GET requests made to "/user"
- * Example: http://localhost:7777/user?age=25&city=delhi
+ * Creating custom middleware handlers (rh1 to rh5).
+ * Each middleware logs a message and calls the next() function.
+ * The next() function passes control to the next middleware in the stack.
  */
-app.get("/user", (req, res) => {
-  /*
-   * Logging the query parameters sent in the URL
-   * Example: If URL is /user?age=25, then req.query = { age: '25' }
-   * This helps in extracting data from the query string
-   */
-  console.log(req.query);
 
-  /*
-   * Sending a JSON response with first and last name
-   * The response will be visible in Postman or the browser as:
-   * {
-   *   "firstName": "Akshay",
-   *   "lastName": "Saini"
-   * }
-   */
-  res.send({ firstName: "Akshay", lastName: "Saini" });
-});
+const rh1 = (req, res, next) => {
+  console.log("RH1: Handling route /");
+  next();
+};
 
+const rh2 = (req, res, next) => {
+  console.log("RH2: Handling route /");
+  next();
+};
 
+const rh3 = (req, res, next) => {
+  console.log("RH3: Handling route /");
+  next();
+};
 
+const rh4 = (req, res, next) => {
+  console.log("RH4: Handling route /");
+  next();
+};
 
-// Express.js app ke liye GET route define kiya gaya hai jo userId ko URL parameter ke form me accept karta hai
-app.get("/user/:userId", (req, res) => {
-
-    // req.params object me sabhi URL parameters hote hain
-    // Yaha hum log userId ko console me print kar rahe hain
-    console.log(req.params);                    // eg: agar URL "/user/123" hai toh output hoga { userId: '123' }
-
-    // Response me JSON object bhej rahe hain user ke naam ke sath
-    res.send({ firstName: "Akshay", lastName: "Saini" });
-});
-
-
+const rh5 = (req, res, next) => {
+  console.log("RH5: Final handler for route /");
+  res.send("Final Response from / route!");
+};
 
 /*
- * Starting the Express server on port 7777
- * Once the server is running, you can open:
- * http://localhost:7777/user in browser or Postman
+ * Attaching multiple middleware functions to the "/" route.
+ * This sequence will be executed in order when a request hits "/".
+ */
+app.use("/", rh1, rh2, rh3, rh4, rh5);
+
+/*
+ * Route: "/user"
+ * This route has a series of middleware handlers, executed in order.
+ * Each handler logs a message and passes control to the next middleware.
+ * Only the last one should send a response.
+ */
+app.use(
+  "/user",
+  (req, res, next) => {
+    console.log("Handling the route user 1!!");
+    next();
+  },
+  (req, res, next) => {
+    console.log("Handling the route user 2!!");
+    next();
+  },
+  (req, res, next) => {
+    console.log("Handling the route user 3!!");
+    next();
+  },
+  (req, res, next) => {
+    console.log("Handling the route user 4!!");
+    res.send("Final Response from /user route!!");
+  }
+);
+
+/*
+ * Starting the server on port 3000.
+ * This will allow us to access the app at http://localhost:3000
  */
 app.listen(7777, () => {
-  console.log("Server is successfully listening on port 7777...");
+  console.log("Server is running on http://localhost:3000");
 });
