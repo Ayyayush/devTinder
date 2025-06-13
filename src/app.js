@@ -11,65 +11,48 @@ const express = require("express");
  */
 const app = express();
 
-const {adminAuth,userAuth} =require("./MiddleWares/auth");
- 
-
-app.use('/admin', adminAuth);
-app.use('/admin', userAuth);
 /*
- * Middleware: Handle Admin Authentication
- * This middleware will run for all HTTP methods (GET, POST, etc.)
- * that start with the path "/admin" (e.g., "/admin/getAllData", "/admin/deleteUser")
+ * Route: GET /getUserData
+ * Description: Simulates a DB call and intentionally throws an error.
  */
-app.use("/admin", (req, res, next) => {
+app.get("/getUserData", (req, res) => {
   /*
-   * Simulated token received from the client.
-   * In a real-world application, retrieve token from headers (e.g., req.headers.authorization)
+   * Simulate an error occurring during the DB call
    */
-  const token = "xyzabcdjfhduifh";
+  throw new Error("dvbzhjf");
 
   /*
-   * Authorization logic: Check if token matches the authorized admin token
+   * This line will never execute due to the error thrown above
    */
-  const isAdminAuthorized = token === "xyz";
- 
+  res.send("User Data Sent");
+});
+
+/*
+ * Error-handling middleware
+ * This catches any error thrown from the routes above and handles them centrally.
+ */
+app.use((err, req, res, next) => {
   /*
-   * If the token is not valid, send a 401 Unauthorized response
+   * Check if an error object exists and respond with a 500 status code
+   * along with a generic error message
+   * log your error
    */
-  if (!isAdminAuthorized) {
-    res.status(401).send("Unauthorized request");
-  } else {
-    /*
-     * If authorized, pass control to the next middleware or route handler
-     */
-    next();
+  if (err) {
+    res.status(500).send("Something went wrong");
   }
 });
 
 /*
- * Route: GET /admin/getAllData
- * This route will be triggered when a GET request is made to /admin/getAllData.
- * Typically used to fetch all data from the server (e.g., from a database).
+ * Route: GET /user
+ * Description: A simple route that returns a success response.
  */
-app.get("/admin/getAllData", (req, res) => {
-  /*
-   * Admin is already authorized via middleware, so we directly send the data.
-   */
-  res.send("All Data Sent");
+app.get("/user", (req, res) => {
+  res.send("User Data Sent");
 });
 
 /*
- * Route: GET /admin/deleteUser
- * This route simulates deleting users (e.g., from a database).
- * Currently it just sends a placeholder response.
- */
-app.get("/admin/deleteUser", (req, res) => {
-  res.send("Deleted Userbase");
-});
-
-/*
- * Starting the server on port 7777.
- * Once the server starts, a confirmation message will be logged to the console.
+ * Start the server on port 7777.
+ * Once the server is up and running, log a message to the console.
  */
 app.listen(7777, () => {
   console.log("Server is successfully listening on port 7777...");
