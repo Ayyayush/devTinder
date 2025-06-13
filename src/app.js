@@ -1,99 +1,76 @@
 /*
- * Importing the Express library using CommonJS syntax.
- * This library allows us to create a web server and manage routing.
+ * Importing the Express framework
+ * Express is a minimal and flexible Node.js web application framework
+ * that provides a robust set of features for web and mobile applications.
  */
 const express = require("express");
 
 /*
  * Creating an instance of an Express application.
+ * This `app` object will be used to define routes and middleware.
  */
 const app = express();
 
+const {adminAuth,userAuth} =require("./MiddleWares/auth");
+ 
+
+app.use('/admin', adminAuth);
+app.use('/admin', userAuth);
 /*
- * Creating custom middleware handlers (rh1 to rh5).
- * Each middleware logs a message and calls the next() function.
- * The next() function passes control to the next middleware in the stack.
+ * Middleware: Handle Admin Authentication
+ * This middleware will run for all HTTP methods (GET, POST, etc.)
+ * that start with the path "/admin" (e.g., "/admin/getAllData", "/admin/deleteUser")
  */
+app.use("/admin", (req, res, next) => {
+  /*
+   * Simulated token received from the client.
+   * In a real-world application, retrieve token from headers (e.g., req.headers.authorization)
+   */
+  const token = "xyzabcdjfhduifh";
 
-const rh1 = (req, res, next) => {
-  console.log("RH1: Handling route /");
-  next();
-};
-
-const rh2 = (req, res, next) => {
-  console.log("RH2: Handling route /");
-  next();
-};
-
-const rh3 = (req, res, next) => {
-  console.log("RH3: Handling route /");
-  next();
-};
-
-const rh4 = (req, res, next) => {
-  console.log("RH4: Handling route /");
-  next();
-};
-
-const rh5 = (req, res, next) => {
-  console.log("RH5: Final handler for route /");
-  res.send("Final Response from / route!");
-};
-
-/*
- * Attaching multiple middleware functions to the "/" route.
- * This sequence will be executed in order when a request hits "/".
- */
-app.use("/", rh1, rh2, rh3, rh4, rh5);
-
-/*
- * Route: "/user"
- * This route has a series of middleware handlers, executed in order.
- * Each handler logs a message and passes control to the next middleware.
- * Only the last one should send a response.
- */
-app.use(
-  "/user",
-  (req, res, next) => {
-    console.log("Handling the route user 1!!");
+  /*
+   * Authorization logic: Check if token matches the authorized admin token
+   */
+  const isAdminAuthorized = token === "xyz";
+ 
+  /*
+   * If the token is not valid, send a 401 Unauthorized response
+   */
+  if (!isAdminAuthorized) {
+    res.status(401).send("Unauthorized request");
+  } else {
+    /*
+     * If authorized, pass control to the next middleware or route handler
+     */
     next();
-  },
-  (req, res, next) => {
-    console.log("Handling the route user 2!!");
-    next();
-  },
-  (req, res, next) => {
-    console.log("Handling the route user 3!!");
-    next();
-  },
-  (req, res, next) => {
-    console.log("Handling the route user 4!!");
-    res.send("Final Response from /user route!!");
   }
-);
-
-
-
-
-// Express app ke andar multiple middlewares aur route handlers define kiye gaye hain
-
-// Route: GET "/user" - yeh pehla route handler hai
-app.get("/user", (req, res, next) => {
-  console.log("Handling the route user 2!!");  // Console pe log karega jab yeh route hit hoga
-  res.send("2nd Route Handler");               // Client ko response bhejega
 });
-
-// Route: GET "/user" - yeh doosra route handler hai jo upar wale se pehle likha hua hona chahiye tha
-app.get("/user", (req, res, next) => {
-  console.log("Handling the route user!!");    // Yeh console pe message print karega
-  next();                                      // next() call karne ka matlab hai agla middleware/handler run hoga
-});
-
 
 /*
- * Starting the server on port 3000.
- * This will allow us to access the app at http://localhost:3000
+ * Route: GET /admin/getAllData
+ * This route will be triggered when a GET request is made to /admin/getAllData.
+ * Typically used to fetch all data from the server (e.g., from a database).
+ */
+app.get("/admin/getAllData", (req, res) => {
+  /*
+   * Admin is already authorized via middleware, so we directly send the data.
+   */
+  res.send("All Data Sent");
+});
+
+/*
+ * Route: GET /admin/deleteUser
+ * This route simulates deleting users (e.g., from a database).
+ * Currently it just sends a placeholder response.
+ */
+app.get("/admin/deleteUser", (req, res) => {
+  res.send("Deleted Userbase");
+});
+
+/*
+ * Starting the server on port 7777.
+ * Once the server starts, a confirmation message will be logged to the console.
  */
 app.listen(7777, () => {
-  console.log("Server is running on http://localhost:3000");
+  console.log("Server is successfully listening on port 7777...");
 });

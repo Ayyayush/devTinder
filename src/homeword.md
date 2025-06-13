@@ -46,5 +46,7 @@ next()
 next function and errors along with res.send()
 what is middle ware 
 how express js handles requests behinfd the scenes 
+Write a dummy auth middleware for admin 
+Write a dummy auth middleware for all user routes except /user/login
 
 
