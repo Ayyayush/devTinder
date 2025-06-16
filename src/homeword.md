@@ -48,6 +48,14 @@ what is middle ware
 how express js handles requests behinfd the scenes 
 Write a dummy auth middleware for admin 
 Write a dummy auth middleware for all user routes except /user/login
-Error Hnadling using app.use
+Error Handling using app.use
 
+
+// Day-6
+Create a free cluster
+install mongoose library
+connect your application to the database connection url devtinder
+call the connectdb function and connect to databse before starting application on 7777
+create a user Schema
+create a signup API to add data to database
 

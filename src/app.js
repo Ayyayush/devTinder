@@ -1,59 +1,59 @@
 /*
- * Importing the Express framework
- * Express is a minimal and flexible Node.js web application framework
- * that provides a robust set of features for web and mobile applications.
+ * Importing required modules
  */
 const express = require("express");
+const connectDB = require("./config/database");
+const User = require("./models/user");
 
 /*
- * Creating an instance of an Express application.
- * This `app` object will be used to define routes and middleware.
+ * Creating an Express app instance
  */
 const app = express();
 
 /*
- * Route: GET /getUserData
- * Description: Simulates a DB call and intentionally throws an error.
+ * Route: POST /signup
+ * This route handles the creation of a new user and saves it to the database
  */
-app.get("/getUserData", (req, res) => {
+app.post("/signup", async (req, res) => {
   /*
-   * Simulate an error occurring during the DB call
+   * Creating a new instance of the User model
    */
-  throw new Error("dvbzhjf");
+  const user = new User({
+    firstName: "Ayyyush",
+    lastName: "Pandey",
+    email: "ayushpandey.com",
+    password: "ayush@123"
+   
+  });
 
   /*
-   * This line will never execute due to the error thrown above
+   * Saving the user to the database
    */
-  res.send("User Data Sent");
+  await user.save();
+
+  /*
+   * Sending response after successful creation
+   */
+  res.send("User Added successfully!");
 });
 
 /*
- * Error-handling middleware
- * This catches any error thrown from the routes above and handles them centrally.
+ * Connecting to the database
  */
-app.use((err, req, res, next) => {
-  /*
-   * Check if an error object exists and respond with a 500 status code
-   * along with a generic error message
-   * log your error
-   */
-  if (err) {
-    res.status(500).send("Something went wrong");
-  }
-});
+connectDB()
+  .then(() => {
+    console.log("Database connection established...");
 
-/*
- * Route: GET /user
- * Description: A simple route that returns a success response.
- */
-app.get("/user", (req, res) => {
-  res.send("User Data Sent");
-});
-
-/*
- * Start the server on port 7777.
- * Once the server is up and running, log a message to the console.
- */
-app.listen(7777, () => {
-  console.log("Server is successfully listening on port 7777...");
-});
+    /*
+     * Starting the server after DB is connected successfully
+     */
+    app.listen(7777, () => {
+      console.log("Server is successfully listening on port 7777...");
+    });
+  })
+  .catch((err) => {
+    /*
+     * Handling DB connection failure
+     */
+    console.error("Database cannot be connected!!");
+  });
