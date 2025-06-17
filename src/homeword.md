@@ -64,5 +64,10 @@ Day -7
 Js object vs json difference
 Add the exprfess.json middleware to your app
 Make your signup API dynamic to recieve data from the end user
+Find and findone method details ,uses ,syntax and rexsult 
+API-Get user by email
+API- Feed API - GET/feed - get all the users from the database
+Try different functions atleast most common ones
+API- GET user by ID  
 
 
