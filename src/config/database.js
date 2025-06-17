@@ -3,13 +3,12 @@ const mongoose = require('mongoose');
 const connectDB = async () => {
     try {
         await mongoose.connect(
-            "mongodb+srv://ayushzp159:HUnoHYPwy8qPWUY5@cluster0.fxudxek.mongodb.net/devTinder",
-            { useNewUrlParser: true, useUnifiedTopology: true }
+            "mongodb+srv://ayushzp159:HUnoHYPwy8qPWUY5@cluster0.fxudxek.mongodb.net/devTinder"
         );
         console.log("Database connection is successful");
     } catch (err) {
-        console.error("Database could not be connected!!");
-        console.error(err); // <-- Add this line
+        console.error("Database cannot be connected!!");
+        console.error(err); // <-- This prints the real error!
         process.exit(1);
     }
 };

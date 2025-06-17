@@ -69,5 +69,12 @@ API-Get user by email
 API- Feed API - GET/feed - get all the users from the database
 Try different functions atleast most common ones
 API- GET user by ID  
+Diff bewteen patch and put 
+Create delete user API
+Create Update user API
+What are options in a model.findOneANDUpdate
+Explore the mongoose method documentation
+API-UpdateThuser with email ID
+
 
 
