@@ -10,6 +10,9 @@ const User = require("./models/user");
  */
 const app = express();
 
+// Add this middleware to parse JSON bodies
+app.use(express.json());
+
 /*
  * Route: POST /signup
  * This route handles the creation of a new user and saves it to the database
@@ -17,24 +20,36 @@ const app = express();
 app.post("/signup", async (req, res) => {
   /*
    * Creating a new instance of the User model
+  
    */
-  const user = new User({
-    firstName: "Ayyyush",
-    lastName: "Pandey",
-    email: "ayushpandey.com",
-    password: "ayush@123"
-   
-  });
 
-  /*
-   * Saving the user to the database
-   */
-  await user.save();
+  
+  const user = new User(req.body
+      );
+
+      try{
+
+ await user.save();
 
   /*
    * Sending response after successful creation
    */
-  res.send("User Added successfully!");
+  res.send("User Added successfully!");      }
+  catch(err)
+  {
+    res.status(400).send("Error saving the user:" + err.message);
+  }
+
+
+
+
+
+
+
+  /*
+   * Saving the user to the database
+   */
+ 
 });
 
 /*

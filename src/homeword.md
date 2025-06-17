@@ -59,3 +59,10 @@ call the connectdb function and connect to databse before starting application o
 create a user Schema
 create a signup API to add data to database
 
+
+Day -7
+Js object vs json difference
+Add the exprfess.json middleware to your app
+Make your signup API dynamic to recieve data from the end user
+
+
