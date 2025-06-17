@@ -18,15 +18,16 @@ app.use(express.json());
  * This route handles the creation of a new user and saves it to the database
  */
 
-// app.post("/signup", async (req, res) => {
-//   try {
-//     const user = new User(req.body);
-//     await user.save();
-//     res.send("User Added successfully!");
-//   } catch (err) {
-//     res.status(400).send("Error saving the user: " + err.message);
-//   }
-// });
+
+app.post("/signup", async (req, res) => {
+  try {
+    const user = new User(req.body);
+    await user.save();
+    res.send("User Added successfully!");
+  } catch (err) {
+    res.status(400).send("Error saving the user: " + err.message);
+  }
+});
 
 
 
@@ -84,7 +85,12 @@ app.patch("/user", async (req, res) => {
     const data = req.body;
 
     try {
-        await User.findByIdAndUpdate({ _id: email }, data);
+        await User.findByIdAndUpdate({ _id: email }, data),
+        {
+returnDocument:"after",
+runValidators:true,
+        };
+        console.log(user);
         res.send("User updated successfully");
     } catch (err) {
         res.status(400).send("Something went wrong");
