@@ -88,4 +88,7 @@ Create a custom validate function for gender
 Improve the DB schema- PUT all appropriatye validations on each field in schema
 Add timestamps to the user Schema 
 Add API level validations on put and patch request
-Study about data sanitization 
+Study about data sanitization
+Add API level validation for each feild of schema - Data Sanitization
+Install Validator 
+Explore Validator Library function and use Validator funcs for password , email  ..etc
