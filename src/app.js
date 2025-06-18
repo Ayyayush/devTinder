@@ -1,17 +1,31 @@
 const express = require("express");
 const connectDB = require("./config/database");
 const User = require("./models/user");
+const { validateSignUpData } = require("./utils/validation");
+const bcrypt = require("bcrypt");
 
 const app = express();
 app.use(express.json());
 
-/*
- * Route: POST /signup
- * This route handles the creation of a new user and saves it to the database
- */
+// Signup Route
 app.post("/signup", async (req, res) => {
   try {
-    const user = new User(req.body);
+    // Validation of data
+    validateSignUpData(req);
+
+    const { firstName, lastName, email, password } = req.body;
+
+    // Encrypt the password
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    // Creating a new instance of the User model
+    const user = new User({
+      firstName,
+      lastName,
+      email,
+      password: passwordHash,
+    });
+
     await user.save();
     res.send("User added successfully!");
   } catch (err) {
@@ -19,56 +33,41 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-/*
- * Route: GET /user
- * This route finds a user by email (expects email in query parameter)
- */
+// Get User by Email
 app.get("/user", async (req, res) => {
   try {
     const email = req.query.email;
     if (!email) {
       return res.status(400).send("Email query parameter is required.");
     }
-
     const user = await User.findOne({ email });
-
     if (!user) {
       return res.status(404).send("User not found.");
     }
-
     res.json(user);
   } catch (err) {
     res.status(500).send("Something went wrong: " + err.message);
   }
 });
 
-/*
- * Route: DELETE /user
- * This route deletes a user by userId (expects userId in request body)
- */
+// Delete User by userId
 app.delete("/user", async (req, res) => {
   try {
     const userId = req.body.userId;
     if (!userId) {
       return res.status(400).send("userId is required in request body.");
     }
-
     const user = await User.findByIdAndDelete(userId);
-
     if (!user) {
       return res.status(404).send("User not found.");
     }
-
     res.send("User deleted successfully.");
   } catch (err) {
     res.status(400).send("Something went wrong: " + err.message);
   }
 });
 
-/*
- * Route: PATCH /user/:userId
- * This route updates user data by ID with allowed fields only
- */
+// Update User by userId
 app.patch("/user/:userId", async (req, res) => {
   const userId = req.params.userId;
   const data = req.body;
@@ -91,7 +90,7 @@ app.patch("/user/:userId", async (req, res) => {
       userId,
       data,
       {
-        new: true,               // ← changed from returnDocument to new
+        new: true,
         runValidators: true,
       }
     );
@@ -106,32 +105,29 @@ app.patch("/user/:userId", async (req, res) => {
   }
 });
 
-/*
- * Route: GET /feed
- * Returns all users
- */
+// Get all users (Feed)
 app.get("/feed", async (req, res) => {
   try {
     const users = await User.find({});
     if (users.length === 0) {
-      return res.status(404).send("No users found");
+      res.status(404).send("No users found");
+    } else {
+      res.send(users);
     }
-    res.send(users);
   } catch (err) {
-    res.status(400).send("Something went wrong: " + err.message);
+    res.status(400).send("Something went wrong");
   }
 });
 
-/*
- * Connect to the database and start the server
- */
+// Connect to the database and start the server
 connectDB()
   .then(() => {
-    console.log("✅ Database connection established...");
+    console.log("Database connection established...");
     app.listen(7777, () => {
-      console.log("🚀 Server is listening on port 7777...");
+      console.log("Server is successfully listening on port 7777...");
     });
   })
   .catch((err) => {
-    console.error("❌ Database connection failed:", err.message);
+        console.error("Database cannot be connected!!");
+    console.error(err);
   });

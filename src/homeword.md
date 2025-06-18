@@ -92,3 +92,11 @@ Study about data sanitization
 Add API level validation for each feild of schema - Data Sanitization
 Install Validator 
 Explore Validator Library function and use Validator funcs for password , email  ..etc
+Never Trust req.Body
+
+
+
+//Day-9
+Create a helper function
+Install bcrypt package
+Create passwordHash using bcrypt.hash & save the user with encrypted password 
