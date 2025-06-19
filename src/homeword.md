@@ -100,3 +100,15 @@ Never Trust req.Body
 Create a helper function
 Install bcrypt package
 Create passwordHash using bcrypt.hash & save the user with encrypted password 
+Creat Login API
+Compare passwords and throw errors if email or passwords is invalid 
+
+
+
+//Day-10
+Install cookie parser
+just send a dummmy cookie parser
+create get/profile API and check if you want the cookie back 
+install jsonwebtoken 
+In login API , after email and password validation , create a JWT token and send it to user in 
+read the cookie inside your profile api and find the logged in user 
