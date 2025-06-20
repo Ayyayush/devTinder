@@ -5,16 +5,15 @@ const { validateSignUpData } = require("./utils/validation");
 const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
-const {userAuth} = require("./MiddleWares/auth");
+const { userAuth } = require("./MiddleWares/auth");
 
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-// Define your JWT secret key here (not inside any function)
-const JWT_SECRET = "your_jwt_secret_key";
+const JWT_SECRET = "your_jwt_secret_key"; // Ideally, use process.env.JWT_SECRET
 
-// Signup Route (unchanged)
+// Signup Route
 app.post("/signup", async (req, res) => {
   try {
     validateSignUpData(req);
@@ -36,7 +35,7 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-// Login Route (corrected)
+// Login Route
 app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -46,17 +45,12 @@ app.post("/login", async (req, res) => {
       throw new Error("Invalid Credentials");
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await user.validatePassword(password);
     if (!isPasswordValid) {
       throw new Error("Invalid Credentials");
     }
 
-    // Use the JWT_SECRET here
-    const token = jwt.sign(
-      { userId: user._id, email: user.email },
-      JWT_SECRET,
-      { expiresIn: "7d" }
-    );
+    const token = user.getJWT();
 
     res.cookie("token", token, {
       httpOnly: true,
@@ -70,29 +64,24 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// ...other routes and server start code...
-
 // GET request for user profile
 app.get("/profile", userAuth, async (req, res) => {
-    try {
-        const user = req.user;   // userAuth middleware se user milega
-        res.send(user);          // user bhej do response mein
-    } catch (err) {
-        res.status(400).send("ERROR : " + err.message);   // error aaya toh 400 status
-    }
+  try {
+    const user = req.user;
+    res.send(user);
+  } catch (err) {
+    res.status(400).send("ERROR : " + err.message);
+  }
 });
 
 // POST request to send connection request
 app.post("/sendConnectionRequest", async (req, res) => {
-    // Sending a connection request
-    console.log("Sending a connection request");    // ✅ lowercase 'log' use kiya hai
-
-    res.send("Connection Request Sent");   // response bhej diya
+  console.log("Sending a connection request");
+  res.send("Connection Request Sent");
 });
 
-
 // Get User by Email
-app.get("/user", userAuth,async (req, res) => {
+app.get("/user", userAuth, async (req, res) => {
   try {
     const email = req.query.email;
     if (!email) {
@@ -108,11 +97,8 @@ app.get("/user", userAuth,async (req, res) => {
   }
 });
 
-
-
-
 // Delete User by userId
-app.delete("/user", userAuth,async (req, res) => {
+app.delete("/user", userAuth, async (req, res) => {
   try {
     const userId = req.body.userId;
     if (!userId) {
@@ -129,7 +115,7 @@ app.delete("/user", userAuth,async (req, res) => {
 });
 
 // Update User by userId
-app.patch("/user/:userId",userAuth, async (req, res) => {
+app.patch("/user/:userId", userAuth, async (req, res) => {
   const userId = req.params.userId;
   const data = req.body;
 
@@ -166,10 +152,6 @@ app.patch("/user/:userId",userAuth, async (req, res) => {
   }
 });
 
-
-
-
-
 // Get all users (Feed)
 app.get("/feed", async (req, res) => {
   try {
@@ -193,6 +175,6 @@ connectDB()
     });
   })
   .catch((err) => {
-        console.error("Database cannot be connected!!");
+    console.error("Database cannot be connected!!");
     console.error(err);
   });

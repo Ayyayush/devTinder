@@ -116,3 +116,5 @@ read the cookie inside your profile api and find the logged in user
 userAuth Middleware 
 Add the userAuth middleware in profile API and a new setConnection request API
 Set the expiry of JWT token and cookies to 7 days 
+Create user schema method to get jwt token 
+Create user schema method to compare passwords 
