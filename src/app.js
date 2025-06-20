@@ -5,6 +5,7 @@ const { validateSignUpData } = require("./utils/validation");
 const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
+const {userAuth} = require("./MiddleWares/auth");
 
 const app = express();
 app.use(express.json());
@@ -71,27 +72,27 @@ app.post("/login", async (req, res) => {
 
 // ...other routes and server start code...
 
+// GET request for user profile
+app.get("/profile", userAuth, async (req, res) => {
+    try {
+        const user = req.user;   // userAuth middleware se user milega
+        res.send(user);          // user bhej do response mein
+    } catch (err) {
+        res.status(400).send("ERROR : " + err.message);   // error aaya toh 400 status
+    }
+});
 
-app.get("/profile", async (req, res) => {
-    const cookies = req.cookies;
+// POST request to send connection request
+app.post("/sendConnectionRequest", async (req, res) => {
+    // Sending a connection request
+    console.log("Sending a connection request");    // ✅ lowercase 'log' use kiya hai
 
-    const { token } = cookies;
-    // Validate my token
-    const decodedMessage = await jwt.verify(token, "DEVETinder$790");
-    const { _id }=decodedMessage;
-    console.log("Logged in user is: "+ _id);
-    console.log= await User.findById(userId);
-
-    console.log(decodedMessage);
-    console.log(cookies);
-
-    res.send("Reading Cookie");
+    res.send("Connection Request Sent");   // response bhej diya
 });
 
 
-
 // Get User by Email
-app.get("/user", async (req, res) => {
+app.get("/user", userAuth,async (req, res) => {
   try {
     const email = req.query.email;
     if (!email) {
@@ -107,8 +108,11 @@ app.get("/user", async (req, res) => {
   }
 });
 
+
+
+
 // Delete User by userId
-app.delete("/user", async (req, res) => {
+app.delete("/user", userAuth,async (req, res) => {
   try {
     const userId = req.body.userId;
     if (!userId) {
@@ -125,7 +129,7 @@ app.delete("/user", async (req, res) => {
 });
 
 // Update User by userId
-app.patch("/user/:userId", async (req, res) => {
+app.patch("/user/:userId",userAuth, async (req, res) => {
   const userId = req.params.userId;
   const data = req.body;
 
@@ -161,6 +165,10 @@ app.patch("/user/:userId", async (req, res) => {
     res.status(400).json({ success: false, message: err.message });
   }
 });
+
+
+
+
 
 // Get all users (Feed)
 app.get("/feed", async (req, res) => {
