@@ -118,3 +118,11 @@ Add the userAuth middleware in profile API and a new setConnection request API
 Set the expiry of JWT token and cookies to 7 days 
 Create user schema method to get jwt token 
 Create user schema method to compare passwords 
+
+
+
+
+Day -11 
+EXplore tinder API'S 
+Create a list of all api you can think of in dev tinder 
+Group multiple routes under respective routers and  
