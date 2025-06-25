@@ -188,7 +188,8 @@ Cretae Connection request Schema
 Send Connection request Api
 Proper Validation of Data 
 Think about All corner Cases 
-$ Query , $or Query $and Query ..etc ..read about it 
+$ Query , $or Query $and Query ..etc ..read about it
+Read More About Logical Queries  
 
 What are indexes in MongoDB 
 Why do we need Indexes 
@@ -196,3 +197,5 @@ Explore Compound indexing
 Why is Unnecessary indexing costly. 
 Advanatages and Disadvantages in Indexing 
 Think of inverse Querying also ..means users who don't pass this query 
+Schema.pre("save")function 
+Never Trust Request Body always think of corner cases 
