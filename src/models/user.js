@@ -10,6 +10,8 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 4,
     maxlength: 50,
+    index: true,
+    trim: true,
   },
   lastName: {
     type: String,
@@ -72,6 +74,12 @@ const userSchema = new mongoose.Schema({
 {
   timestamps: true,
 });
+
+// Add compound indexes for better query performance
+userSchema.index({ firstName: 1, lastName: 1 }); // For searching by full name
+userSchema.index({ age: 1, gender: 1 }); // For filtering by age and gender
+userSchema.index({ skills: 1, age: 1 }); // For skill-based searches with age filter
+userSchema.index({ email: 1, firstName: 1 }); // For user lookup optimizations
 
 userSchema.methods.getJWT = function () {
   const user = this;

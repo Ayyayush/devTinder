@@ -1,4 +1,3 @@
-
 const mongoose = require('mongoose');
 
 const connectionRequestSchema = new mongoose.Schema({
@@ -18,8 +17,12 @@ const connectionRequestSchema = new mongoose.Schema({
     message: '{VALUE} is incorrect status type'
   }
 }, {
-  timestamps: true
+  timestamps: true,
 });
+
+// Add compound index for better query performance on connection requests
+connectionRequestSchema.index({ fromUserId: 1, toUserId: 1 });
+connectionRequestSchema.index({ toUserId: 1, fromUserId: 1 }); // For reverse lookups
 
 connectionRequestSchema.pre("save", function () {
   const connectionRequest = this;
@@ -30,6 +33,4 @@ connectionRequestSchema.pre("save", function () {
   next();    // important to do it here 
 });
 
-const ConnectionRequest = mongoose.model('ConnectionRequest', connectionRequestSchema);
-
-module.exports = ConnectionRequest;
+module.exports = mongoose.model("ConnectionRequest", connectionRequestSchema);

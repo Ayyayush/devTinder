@@ -180,3 +180,19 @@ npm install --save-dev nodemon   # Adds nodemon to devDependencies
 - Create routes folder for managing auth, profile, request routers
 - Create authRouter, profileRouter, requestRouter
 - Import these routers in app.js
+
+
+## Day-12 
+### Homwork
+Cretae Connection request Schema 
+Send Connection request Api
+Proper Validation of Data 
+Think about All corner Cases 
+$ Query , $or Query $and Query ..etc ..read about it 
+
+What are indexes in MongoDB 
+Why do we need Indexes 
+Explore Compound indexing 
+Why is Unnecessary indexing costly. 
+Advanatages and Disadvantages in Indexing 
+Think of inverse Querying also ..means users who don't pass this query 
