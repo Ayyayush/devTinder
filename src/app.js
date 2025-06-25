@@ -19,6 +19,9 @@ app.use("/auth", authRouter);
 app.use("/profile", profileRouter);
 app.use("/requests", requestRouter);
 
+
+
+
 // POST request to send connection request
 
 
@@ -111,6 +114,7 @@ app.get("/feed", async (req, res) => {
 });
 
 // Connect to the database and start the server
+console.log("Starting application...");
 connectDB()
   .then(() => {
     console.log("Database connection established...");

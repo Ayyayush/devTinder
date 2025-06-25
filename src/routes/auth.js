@@ -21,7 +21,15 @@ authRouter.post("/signup", async (req, res) => {
     });
 
     await user.save();
-    res.send("User added successfully!");
+    res.json({
+      message: "User added successfully!",
+      user: {
+        id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email
+      }
+    });
   } catch (err) {
     res.status(400).send("Error saving the user: " + err.message);
   }
@@ -49,9 +57,29 @@ authRouter.post("/login", async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
-    res.send("Login Successful!");
+    res.json({
+      message: "Login Successful!",
+      user: {
+        id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email
+      },
+      token: token // For debugging - remove in production
+    });
   } catch (err) {
     res.status(400).send("ERROR : " + err.message);
+  }
+});
+
+authRouter.post("/logout", async (req, res) => {
+  try {
+    res.clearCookie("token");
+    res.json({
+      message: "Logout Successful!"
+    });
+  } catch (err) {
+    res.status(500).send("Error during logout: " + err.message);
   }
 });
 
