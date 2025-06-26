@@ -199,3 +199,11 @@ Advanatages and Disadvantages in Indexing
 Think of inverse Querying also ..means users who don't pass this query 
 Schema.pre("save")function 
 Never Trust Request Body always think of corner cases 
+
+
+## Day-13
+Write the code with proper validationsfor POST /request/reviews/:status/:requestId
+Though process - POST vs Get
+Read about ref and populate 
+Create Get /user/requests/recieved with all the checks and responses 
+
