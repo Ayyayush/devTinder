@@ -149,11 +149,15 @@ npm install --save-dev nodemon   # Adds nodemon to devDependencies
 - Just send a dummy cookie parser
 - Create get/profile API and check if you want the cookie back 
 
+
+
 ### JWT Implementation
 - Install jsonwebtoken 
 - In login API, after email and password validation, create a JWT token and send it to user
 - Read the cookies inside your profile API and find the logged in user 
 - Read the cookie inside your profile api and find the logged in user
+
+
 
 ### Middleware & Security
 - userAuth Middleware 
@@ -207,3 +211,17 @@ Though process - POST vs Get
 Read about ref and populate 
 Create Get /user/requests/recieved with all the checks and responses 
 
+
+## Day-14 
+Logic to get Feed API
+Explore the $nin , $and and other query operators
+
+### Pagination
+/feed?page=1&limit=10=> users 1=10
+/feed?page=2&limit=10 => 11-20
+/feed?page=3 &limit=10 => 21-30
+
+
+.skip() && .limit()
+
+ 
